@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 import ar.com.ada.api.empleadas.entities.*;
 import ar.com.ada.api.empleadas.models.response.GenericResponse;
+import ar.com.ada.api.empleadas.services.CategoriaService;
 
 @RestController
 public class CategoriaController {
