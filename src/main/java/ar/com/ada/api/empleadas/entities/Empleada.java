@@ -1,7 +1,7 @@
 package ar.com.ada.api.empleadas.entities;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.*;
 
 import javax.persistence.*;
 
