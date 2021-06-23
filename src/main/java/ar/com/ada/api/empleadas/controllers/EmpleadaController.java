@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,22 +30,22 @@ public class EmpleadaController {
 
     @GetMapping("/empleados")
     public ResponseEntity<List<Empleada>> traerEmpleadas() {
-        List<Empleada> lista = service.traerEmpleadas();
+        final List<Empleada> lista = service.traerEmpleadas();
 
         return ResponseEntity.ok(lista);
     }
 
     @PostMapping("/empleados")
-    public ResponseEntity<?> crearEmpleada(@RequestBody InfoEmpleadaNueva empleadaInfo) {
-        GenericResponse respuesta = new GenericResponse();
+    public ResponseEntity<?> crearEmpleada(@RequestBody final InfoEmpleadaNueva empleadaInfo) {
+        final GenericResponse respuesta = new GenericResponse();
 
-        Empleada empleada = new Empleada();
+        final Empleada empleada = new Empleada();
         empleada.setNombre(empleadaInfo.nombre);
         empleada.setEdad(empleadaInfo.edad);
         empleada.setSueldo(empleadaInfo.sueldo);
         empleada.setFechaAlta(new Date());
         
-        Categoria categoria = categoriaService.buscarCategoria(empleadaInfo.categoriaId);
+        final Categoria categoria = categoriaService.buscarCategoria(empleadaInfo.categoriaId);
         empleada.setCategoria(categoria);
         empleada.setEstado(EstadoEmpleadaEnum.ACTIVO);
 
@@ -56,4 +57,10 @@ public class EmpleadaController {
 
     }
 
+    @GetMapping("/empleados/{id}")
+    public ResponseEntity<Empleada> getEmpleadaPorId(@PathVariable Integer id){
+        Empleada empleada = service.buscarEmpleada(id);
+
+        return ResponseEntity.ok(empleada);
+    }
 }
