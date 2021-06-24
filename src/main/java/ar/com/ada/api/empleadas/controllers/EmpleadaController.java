@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,16 +37,16 @@ public class EmpleadaController {
     }
 
     @PostMapping("/empleados")
-    public ResponseEntity<?> crearEmpleada(@RequestBody final InfoEmpleadaNueva empleadaInfo) {
-        final GenericResponse respuesta = new GenericResponse();
+    public ResponseEntity<?> crearEmpleada(@RequestBody  InfoEmpleadaNueva empleadaInfo) {
+        GenericResponse respuesta = new GenericResponse();
 
-        final Empleada empleada = new Empleada();
+        Empleada empleada = new Empleada();
         empleada.setNombre(empleadaInfo.nombre);
         empleada.setEdad(empleadaInfo.edad);
         empleada.setSueldo(empleadaInfo.sueldo);
         empleada.setFechaAlta(new Date());
         
-        final Categoria categoria = categoriaService.buscarCategoria(empleadaInfo.categoriaId);
+        Categoria categoria = categoriaService.buscarCategoria(empleadaInfo.categoriaId);
         empleada.setCategoria(categoria);
         empleada.setEstado(EstadoEmpleadaEnum.ACTIVO);
 
@@ -62,5 +63,29 @@ public class EmpleadaController {
         Empleada empleada = service.buscarEmpleada(id);
 
         return ResponseEntity.ok(empleada);
+    }
+
+    //Detele/empleados/{id} --> Da de baja un empleado poniendo el campo estado en "baja"
+    // y la fecha de baja que sea el dia actual.
+    @DeleteMapping("/empleados/{id}")
+    public ResponseEntity<GenericResponse> bajaEmpleada(@PathVariable Integer id){
+
+        service.bajaEmpleadaPorId(id);
+
+        GenericResponse respuesta = new GenericResponse();
+
+        respuesta.isOk = true;
+        respuesta.message = "La empleada fue dada de baja con exito";
+
+        return ResponseEntity.ok(respuesta);
+
+    }
+
+    //Get /empleados/categorias/{catId} --> Obtiene la lista de empleados de una categoria.
+    @GetMapping("/empleados/categorias/{catId}")
+    public ResponseEntity<List<Empleada>> obtenerEmpleadasPorCategoria(@PathVariable Integer catId){
+        
+        List<Empleada> empleadas = service.traerEmpleadaPorCategoria(catId);
+        return ResponseEntity.ok(empleadas);
     }
 }
