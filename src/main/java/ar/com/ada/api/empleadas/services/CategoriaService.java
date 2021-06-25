@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import ar.com.ada.api.empleadas.entities.Categoria;
 import ar.com.ada.api.empleadas.repos.CategoriaRepository;
+import ar.com.ada.api.empleadas.repos.EmpleadaRepository;
 @Service
 public class CategoriaService {
 

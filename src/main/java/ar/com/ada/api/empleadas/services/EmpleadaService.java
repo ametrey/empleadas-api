@@ -59,4 +59,8 @@ public class EmpleadaService {
         return categoria.getEmpleadas();
 
 	}
+
+	public void guardar(Empleada empleada) {
+        repo.save(empleada);
+	}
 }
